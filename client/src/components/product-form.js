@@ -9,27 +9,47 @@ import {useNavigate} from 'react-router-dom'
 
 function ProductForm() {
 
+    const colorOptions = [
+        { value: 'hsl(0, 0%, 100%)', label: 'alb' }, // White
+        { value: 'hsl(30, 100%, 87%)', label: 'crem' }, // Cream
+        { value: 'hsl(60, 100%, 50%)', label: 'galben' }, // Yellow
+        { value: 'hsl(330, 100%, 88%)', label: 'roz' }, // Pink
+        { value: 'hsl(30, 100%, 50%)', label: 'orange' }, // Orange
+        { value: 'hsl(240, 100%, 50%)', label: 'albastru' }, // Blue
+        { value: 'hsl(120, 100%, 50%)', label: 'verde' }, // Green
+        { value: 'hsl(45, 100%, 55%)', label: 'mustar' }, // Mustard
+        { value: 'hsl(0, 0%, 50%)', label: 'gri' }, // Gray
+        { value: 'linear-gradient(135deg, #b0b0b0 25%, #ffffff 50%, #b0b0b0 75%)', label: 'silver' }, // Shining Silver
+        { value: 'linear-gradient(135deg, #ffd700 25%, #fffacd 50%, #ffd700 75%)', label: 'gold' }, // Shining Gold
+        { value: 'hsl(270, 100%, 50%)', label: 'violet' }, // Violet
+    ];
+
     const navigate = useNavigate ();
     
     // SLIDERS
     const [formData, setFormData] = useState({
         productName: '',
+        price: 100,
         distance: '',
-        adaptive: false,
-        digitalProtection: 30,
+        thicknessReduction: '',
         hardening: 50,
         antireflex: 50,
-        oleophobic: 50,
         hydrophobic: 50,
+        oleophobic: 50,
         antistatic: 50,
-        digital: 50,
-        thicknessReduction: '',
+        blueFilter: false,
+        adaptive: false,
         comfort: 50,
         heliomat: 50,
         customization: false,
-        blueFilter: false,
+        description: '',
+        primaryProductColor: '',
+        secondaryProductColor: '',
+        visualField: '',
+        deliveryTime: '',
         userOwner: window.localStorage.getItem("UserID")
     });
+
 
     
 
@@ -37,10 +57,16 @@ function ProductForm() {
     const handleAttributeChange = (event) => {
         const { name, value, type, checked } = event.target;
         if (type === "checkbox") {
-            setFormData(formData => ({
-                ...formData,
-                [name]: checked  // Use the 'checked' value for checkboxes
-            }));
+            setFormData(formData => {
+                const updatedFormData = {
+                    ...formData,
+                    [name]: checked  // Use the 'checked' value for checkboxes
+                };
+                if (name === "customization") {
+                    updatedFormData.deliveryTime = checked ? "10-14 Zile lucratoare" : "3-5 zile lucratoare";
+                }
+                return updatedFormData;
+            });
         } else {
             setFormData(formData => ({
                 ...formData,
@@ -78,15 +104,35 @@ function ProductForm() {
                 value={formData.productName}
                 onChange={handleAttributeChange}
             />
+
+            <InputAttribute
+                name="description"
+                label="Descriere produs"
+                value={formData.description}
+                onChange={handleAttributeChange}
+                multiline
+                rows={4}
+            />
+
+            <InputAttribute
+                name="price"
+                label="Pret"
+                value={formData.price}
+                onChange={handleAttributeChange}
+            />
             <DropdownAttribute
                 name="distance"
-                label={"Distanta"}
+                label={"Tipul de ochelari"}
                 value={formData.distance}
                 onChange={handleAttributeChange}
                 options={[
-                    { value: 'aproape', label: 'aproape' }, 
-                    { value: 'departe', label: 'departe' },
-                    { value: 'intermediar', label: 'intermediar' },
+                    { value: 'distanta', label: 'Distanta' }, 
+                    { value: 'aproape', label: 'Aproape' },
+                    { value: 'bifocal', label: 'Bifocal' },
+                    { value: 'progresiv', label: 'Progresiv' },
+                    { value: 'degresiv', label: 'Degresiv' },
+                    { value: 'monofocal', label: 'Monofocal' },
+                    { value: 'distanta-aproape', label: 'Distanta-Aproape' },
                 ]}
             />
             <DropdownAttribute
@@ -95,19 +141,11 @@ function ProductForm() {
                 value={formData.thicknessReduction}
                 onChange={handleAttributeChange}
                 options={[
-                    { value: 'Grad 1', label: 'Grad 1' }, 
-                    { value: 'Grad 2', label: 'Grad 2' },
-                    { value: 'Grad 3', label: 'Grad 3' },
+                    { value: 'fara subtiere', label: 'Fara subtiere' }, 
+                    { value: 'lite', label: 'Lite' },
+                    { value: 'lite+', label: 'Lite+' },
+                    { value: 'lite++', label: 'Lite++' },
                 ]}
-            />
-            <SliderAttribute
-                name = 'digitalProtection'
-                title="Protectie digitala"
-                value={formData.digitalProtection}
-                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'digitalProtection', value: newValue }})}
-                min={0}
-                max={100}
-                step={20}
             />
             <SliderAttribute
                 name = 'hardening'
@@ -116,7 +154,7 @@ function ProductForm() {
                 onChange={(e, newValue) => handleAttributeChange({ target: { name: 'hardening', value: newValue }})}
                 min={0}
                 max={100}
-                step={20}
+                step={10}
             />
             <SliderAttribute
                 name = 'antireflex'
@@ -125,8 +163,27 @@ function ProductForm() {
                 onChange={(e, newValue) => handleAttributeChange({ target: { name: 'antireflex', value: newValue }})}
                 min={0}
                 max={100}
-                step={20}
+                step={10}
             />
+            <SliderAttribute
+                name = 'hydrophobic'
+                title="Hidrofob"
+                value={formData.hydrophobic}
+                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'hydrophobic', value: newValue }})}
+                min={0}
+                max={100}
+                step={10}
+            />
+
+            <SliderAttribute
+                name = 'oleophobic'
+                title="Oleofob"
+                value={formData.oleophobic}
+                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'oleophobic', value: newValue }})}
+                min={0}
+                max={100}
+                step={10}
+            />  
             <SliderAttribute
                 name = 'antistatic'
                 title="Antistatic"
@@ -145,14 +202,31 @@ function ProductForm() {
                 max={100}
                 step={10}
             />
-            <SliderAttribute
-                name = 'heliomat'
-                title="Heliomat"
+
+            <DropdownAttribute
+                name="heliomat"
+                label={"Heliomat"}
                 value={formData.heliomat}
-                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'heliomat', value: newValue }})}
-                min={0}
-                max={100}
-                step={10}
+                onChange={handleAttributeChange}
+                options={[
+                    { value: 'fara heliomat', label: 'fara heliomat' }, 
+                    { value: 'clasic', label: 'clasic' },
+                    { value: 'avansat', label: 'avansat' },
+                    { value: 'expert', label: 'expert' },
+                ]}
+            />
+            
+            <DropdownAttribute
+                name="blueFilter"
+                label={"Filtru lumina albastra"}
+                value={formData.blueFilter}
+                onChange={handleAttributeChange}
+                options={[
+                    { value: 'fara filtru lumina albastra', label: 'Fara filtru lumina albastra' }, 
+                    { value: 'emerald', label: 'Emerald' },
+                    { value: 'emerald blue', label: 'Emerald blue' },
+                    { value: 'blue', label: 'Blue' },
+                ]}
             />
             <CheckboxAttribute
                 name="adaptive"
@@ -160,20 +234,39 @@ function ProductForm() {
                 checked={formData.adaptive}
                 onChange={handleAttributeChange}
             />
+
+
+            <DropdownAttribute
+                name="primaryProductColor"
+                label="Culoare Primara"
+                value={formData.primaryProductColor}
+                onChange={handleAttributeChange}
+                options={colorOptions}
+            />
+            <DropdownAttribute
+                name="secondaryProductColor"
+                label="Culoare Secundara"
+                value={formData.secondaryProductColor}
+                onChange={handleAttributeChange}
+                options={colorOptions}
+            />
+            <DropdownAttribute
+                name="visualField"
+                label="Camp Vizual"
+                value={formData.visualField}
+                onChange={handleAttributeChange}
+                options={[
+                    { value: 'small', label: 'Mic' }, 
+                    { value: 'medium', label: 'Mediu' },
+                    { value: 'large', label: 'Mare' }
+                ]}
+            />
             <CheckboxAttribute
                 name="customization"
                 label="Personalizare"
                 checked={formData.customization}
                 onChange={handleAttributeChange}
             />
-            <CheckboxAttribute
-                name="blueFilter"
-                label="Filtru lumina albastra"
-                checked={formData.blueFilter}
-                onChange={handleAttributeChange}
-            />
-
-
 
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Salveaza produs

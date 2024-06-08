@@ -6,82 +6,104 @@ const ProductSchema = new Schema({
         type: String,
         required: true
     },
+    
+    price: {
+        type: Number,
+        required: true
+    },
+
     distance: {
         type: String,
-        enum: ['aproape', 'departe', 'intermediar'],
         required: true
     },
-    adaptive: {
-        type: Boolean,
+
+    thicknessReduction: {
+        type: String,
         required: true
     },
-    digitalProtection: {
-        type: Number,
-        min: 0,
-        max: 100,
-        required: true
-    },
+
     hardening: {  // "durificare" translated to "hardening"
         type: Number,
         min: 0,
         max: 100,
         required: true
     },
+
     antireflex: {
         type: Number,
         min: 0,
         max: 100,
         required: true
     },
-    oleophobic: {  // "oleofob" translated to "oleophobic"
-        type: Number,
-        min: 0,
-        max: 100,
-        required: true
-    },
+
     hydrophobic: {  // "hidrofob" translated to "hydrophobic"
         type: Number,
         min: 0,
         max: 100,
         required: true
     },
+
+    oleophobic: {  // "oleofob" translated to "oleophobic"
+        type: Number,
+        min: 0,
+        max: 100,
+        required: true
+    },
+
     antistatic: {
         type: Number,
         min: 0,
         max: 100,
         required: true
     },
-    digital: {
-        type: Number,
-        min: 0,
-        max: 100,
-        required: true
-    },
-    thicknessReduction: {  // "subtiere" translated to "thickness reduction"
+
+    heliomat: {
         type: String,
-        enum: ['Grad 1', 'Grad 2', 'Grad 3'],  // "grad" translated to "grade"
         required: true
     },
+
     comfort: {
         type: Number,
         min: 0,
         max: 100,
         required: true
     },
-    heliomat: {
-        type: Number,
-        min: 0,
-        max: 100,
+
+    blueFilter: {
+        type: String,
         required: true
     },
+
+    adaptive: {
+        type: Boolean,
+        required: true
+    },
+
     customization: {  // "personalizare" translated to "customization"
         type: Boolean,
         required: true
     },
-    blueFilter: {
-        type: Boolean,
+    description: {  // "personalizare" translated to "customization"
+        type: String,
         required: true
     },
+    primaryProductColor: {  // "personalizare" translated to "customization"
+        type: String,
+        required: true
+    },
+    secondaryProductColor: {  // "personalizare" translated to "customization"
+        type: String,
+        required: true
+    },
+    visualField: {  // "personalizare" translated to "customization"
+        type: String,
+        required: true
+    },
+    deliveryTime: {  // "personalizare" translated to "customization"
+        type: String,
+        required: true
+    },
+
     userOwner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",  // Changed "users" to "User" to match typical Mongoose naming conventions

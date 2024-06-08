@@ -9,7 +9,9 @@ function InputAttribute({
   onChange,
   error = null,
   helperText = '',
-  fullWidth = "true"
+  fullWidth = true, // Corrected to boolean
+  multiline = false, // New prop for multiline
+  rows = 1, // Default rows for multiline
 }) {
   return (
     <TextField
@@ -23,7 +25,8 @@ function InputAttribute({
       helperText={error || helperText}
       fullWidth={fullWidth}
       margin="normal"
-
+      multiline={multiline} // Multiline prop
+      rows={rows} // Number of rows for multiline
     />
   );
 }

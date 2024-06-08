@@ -19,7 +19,11 @@ function DropdownAttribute({
         name={name}
       >
         {options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem 
+            key={option.value} 
+            value={option.value}
+            style={{ backgroundColor: option.value, color: 'black' }} // Set background color dynamically
+          >
             {option.label}
           </MenuItem>
         ))}
