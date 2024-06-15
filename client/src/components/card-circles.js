@@ -1,8 +1,12 @@
 import React from 'react';
+import { getHSLValue } from './colorUtils';
 
 const Circle = ({ product, imgSrc }) => {
-  const secondaryColor = product?.secondaryProductColor || 'hsl(0, 0%, 50%)'; // Default to gray if undefined
-  const primaryColor = product?.primaryProductColor || 'hsl(0, 0%, 50%)'
+  const secondaryColorLabel = product?.secondaryProductColor || 'alb'  // Default to gray if undefined
+  const secondaryColor = getHSLValue(secondaryColorLabel);
+  
+  const primaryColorLabel = product?.primaryProductColor || 'alb'
+  const primaryColor = getHSLValue(primaryColorLabel);
   const isGradient = primaryColor.includes('linear-gradient');
   let borderColor = secondaryColor;
 

@@ -10,18 +10,18 @@ import {useNavigate} from 'react-router-dom'
 function ProductForm() {
 
     const colorOptions = [
-        { value: 'hsl(0, 0%, 100%)', label: 'alb' }, // White
-        { value: 'hsl(30, 100%, 87%)', label: 'crem' }, // Cream
-        { value: 'hsl(60, 100%, 50%)', label: 'galben' }, // Yellow
-        { value: 'hsl(330, 100%, 88%)', label: 'roz' }, // Pink
-        { value: 'hsl(30, 100%, 50%)', label: 'orange' }, // Orange
-        { value: 'hsl(240, 100%, 50%)', label: 'albastru' }, // Blue
-        { value: 'hsl(120, 100%, 50%)', label: 'verde' }, // Green
-        { value: 'hsl(45, 100%, 55%)', label: 'mustar' }, // Mustard
-        { value: 'hsl(0, 0%, 50%)', label: 'gri' }, // Gray
-        { value: 'linear-gradient(135deg, #b0b0b0 25%, #ffffff 50%, #b0b0b0 75%)', label: 'silver' }, // Shining Silver
-        { value: 'linear-gradient(135deg, #ffd700 25%, #fffacd 50%, #ffd700 75%)', label: 'gold' }, // Shining Gold
-        { value: 'hsl(270, 100%, 50%)', label: 'violet' }, // Violet
+        { value: 'alb', label: 'alb' }, // White
+        { value: 'crem', label: 'crem' }, // Cream
+        { value: 'galben', label: 'galben' }, // Yellow
+        { value: 'roz', label: 'roz' }, // Pink
+        { value: 'orange', label: 'orange' }, // Orange
+        { value: 'albastru', label: 'albastru' }, // Blue
+        { value: 'verde', label: 'verde' }, // Green
+        { value: 'mustar', label: 'mustar' }, // Mustard
+        { value: 'gri', label: 'gri' }, // Gray
+        { value: 'silver', label: 'silver' }, // Shining Silver
+        { value: 'gold', label: 'gold' }, // Shining Gold
+        { value: 'violet', label: 'violet' }, // Violet
     ];
 
     const navigate = useNavigate ();
@@ -49,7 +49,6 @@ function ProductForm() {
         deliveryTime: '',
         userOwner: window.localStorage.getItem("UserID")
     });
-
 
     
 

@@ -1,7 +1,9 @@
 import React from 'react';
+import { getHSLValue } from './colorUtils'
 
 const PriceBox = ({ product }) => {
-  const primaryColor = product?.primaryProductColor || 'white';
+  const primaryColorLabel = product?.primaryProductColor || 'alb';
+  const primaryColor = getHSLValue(primaryColorLabel);
   const isGradient = primaryColor.includes('linear-gradient');
   const borderColor = isGradient ? 'white' : primaryColor; // Fallback to black or any solid color
 
@@ -14,7 +16,7 @@ const PriceBox = ({ product }) => {
       alignItems: 'center',
       justifyContent: 'center',
       color: borderColor, // White text color for contrast
-      fontSize: '60px', // Larger font size
+      fontSize: '45px', // Larger font size
       boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', // Subtle shadow for a 3D effect
       gridColumn: 'span 2', // Span two columns in the grid
       gridRow: 'span 2', // Span two rows in the grid

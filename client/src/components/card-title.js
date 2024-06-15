@@ -1,7 +1,9 @@
 import React from 'react';
+import { getHSLValue } from './colorUtils'; // Adjust the path as needed
 
 const CardTitle = ({ product }) => {
-  const primaryColor = product?.primaryProductColor || 'white';
+  const primaryColorLabel = product?.primaryProductColor || 'alb';
+  const primaryColor = getHSLValue(primaryColorLabel);
   const isGradient = primaryColor.includes('linear-gradient');
   const borderColor = isGradient ? 'black' : primaryColor; // Fallback to black or any solid color
 
