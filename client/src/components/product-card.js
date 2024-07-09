@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Card, CardContent, Typography, CardActions, Button, Box } from '@mui/material';
 import Circle from './card-circles.js';
 import CardSlider from './card-slider.js';
+import { useGetUserID } from '../Hooks/getUserId.js';
+import axios from 'axios';
 
 // Importing images statically
 import antireflexImg from '../assets/antireflex.png';
@@ -23,6 +25,7 @@ const imageSources = {
 };
 
 function ProductCard({ product }) {
+    const userID = window.localStorage.getItem("UserID")
     const [sliderValue, setSliderValue] = useState(product.initialValue || 50); // Initial slider value, can be adjusted as needed
 
     const handleSliderChange = (event, newValue) => {
@@ -32,6 +35,23 @@ function ProductCard({ product }) {
     const getImageSrc = (attribute, key) => {
         return product[attribute] > 0 ? imageSources[key] : null;
     };
+
+    const saveProduct = async (productID, userID) => {
+        try {
+            const payload = { productID, userID };
+            console.log('Sending payload:', payload);
+    
+            const response = await axios.put("http://localhost:3001/products", payload);
+            console.log('Response:', response);
+        } catch (err) {
+            if (err.response) {
+                console.error('Error response data:', err.response.data);
+            } else {
+                console.error('Error message:', err.message);
+            }
+        }
+    };
+    
 
     return (
         <Card sx={{
@@ -49,7 +69,7 @@ function ProductCard({ product }) {
             color: 'white'             // Text color inside the card
         }}>
             <CardContent>
-                <CardTitle product= {product}/>
+                <CardTitle product={product} />
                 <Box sx={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(5, 1fr)',
@@ -69,8 +89,8 @@ function ProductCard({ product }) {
                     <Circle product={product} imgSrc={getImageSrc('blueFilter', 'blueFilter')} />
                     <Circle product={product} imgSrc={getImageSrc('oleophobic', 'oleophobic')} />
                 </Box>
-                <Box sx={{ 
-                    display: 'flex', 
+                <Box sx={{
+                    display: 'flex',
                     flexDirection: 'column', // Ensure the content is stacked vertically
                     width: '100%',
                     alignItems: 'flex-start', // Align content to the left
@@ -82,8 +102,8 @@ function ProductCard({ product }) {
                     borderRadius: '10px', // Rounded corners
                     boxSizing: 'border-box' // Ensure padding and border are included in the element's width and height
                 }}>
-                    <Typography 
-                        variant="body2" 
+                    <Typography
+                        variant="body2"
                         color="white"
                         sx={{
                             wordWrap: 'break-word',
@@ -96,8 +116,7 @@ function ProductCard({ product }) {
                     </Typography>
                 </Box>
 
-                <div style={{ marginTop: '10px', marginBottom: '10px'}}><span style={{ color: '#888888' }}>PROPRIETATI</span> </div>
-
+                <div style={{ marginTop: '10px', marginBottom: '10px' }}><span style={{ color: '#888888' }}>PROPRIETATI</span> </div>
 
                 <Box sx={{ '& > *': { margin: 0, padding: 0 } }}>
                     <CardSlider
@@ -163,8 +182,7 @@ function ProductCard({ product }) {
 
             </CardContent>
             <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <Button size="small" sx={{ color: product.primaryColor }}>Save</Button>
-                <Button size="small" sx={{ color: product.primaryColor }}>Details</Button>
+                <Button onClick={() => saveProduct(product._id, userID)} size="small" sx={{ color: product.primaryColor }}>Save</Button>
             </CardActions>
         </Card>
     );

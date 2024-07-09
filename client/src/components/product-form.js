@@ -255,9 +255,10 @@ function ProductForm() {
                 value={formData.visualField}
                 onChange={handleAttributeChange}
                 options={[
-                    { value: 'small', label: 'Mic' }, 
-                    { value: 'medium', label: 'Mediu' },
-                    { value: 'large', label: 'Mare' }
+                    { value: 'mic', label: 'Mic' }, 
+                    { value: 'mediu', label: 'Mediu' },
+                    { value: 'mare', label: 'Mare' },
+                    { value: 'n/a', label: 'n/a' }
                 ]}
             />
             <CheckboxAttribute
