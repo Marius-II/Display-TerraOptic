@@ -103,11 +103,34 @@ router.put("/", async (req, res) => {
     }
 });
 
+// PUT to remove a saved product from a user
+router.put("/removeSavedProduct", async (req, res) => {
+    try {
+        const { productID, userID } = req.body;
+        if (!productID || !userID) {
+            return res.status(400).json({ error: 'productID and userID are required' });
+        }
+
+        const user = await UserModel.findById(userID);
+        if (!user) {
+            return res.status(400).json({ error: 'User not found' });
+        }
+
+        user.savedProducts = user.savedProducts.filter(id => id.toString() !== productID);
+        await user.save();
+
+        res.status(200).json({ savedProducts: user.savedProducts });
+    } catch (err) {
+        console.error('Server error:', err);
+        res.status(400).json({ error: 'An error occurred', details: err.message });
+    }
+});
+
 
 // GET saved product IDs for a user
-router.get("/savedProducts/ids", async (req, res) => {
+router.get("/savedProducts/ids:userID", async (req, res) => {
     try {
-        const user = await UserModel.findById(req.body.userID);
+        const user = await UserModel.findById(req.params.userID);
         res.json({ savedProducts: user.savedProducts });
     } catch (err) {
         res.json(err);
@@ -115,9 +138,9 @@ router.get("/savedProducts/ids", async (req, res) => {
 });
 
 // GET saved products for a user
-router.get("/savedProducts", async (req, res) => {
+router.get("/savedProducts/:userID", async (req, res) => {
     try {
-        const user = await UserModel.findById(req.body.userID);
+        const user = await UserModel.findById(req.params.userID);
         const savedProducts = await ProductModel.find({
             _id: { $in: user.savedProducts },
         });

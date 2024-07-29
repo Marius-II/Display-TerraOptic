@@ -5,6 +5,7 @@ import FilterComponent from '../components/Filters/checkbox-filter';
 
 export const Home = () => {
   const [products, setProducts] = useState([]);
+  const [savedProducts, setSavedProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -17,6 +18,16 @@ export const Home = () => {
     minPrice: '',
     maxPrice: ''
   });
+
+  const fetchSavedProducts = async () => {
+    const userID = window.localStorage.getItem("UserID");
+    try {
+      const response = await axios.get(`http://localhost:3001/products/savedProducts/ids${userID}`);
+      setSavedProducts(response.data.savedProducts);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -48,6 +59,7 @@ export const Home = () => {
 
   useEffect(() => {
     fetchProducts();
+    fetchSavedProducts();
   }, [fetchProducts]);
 
   const handleFilterChange = (newFilters) => {
@@ -61,6 +73,33 @@ export const Home = () => {
     const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
     if (bottom && !loading && hasMore) {
       setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const isProductSaved = (id) => {
+    return savedProducts.includes(id);
+  };
+
+
+  const handleSaveProduct = async (productID) => {
+    const userID = window.localStorage.getItem("UserID");
+    try {
+      const payload = { productID, userID };
+      const response = await axios.put("http://localhost:3001/products", payload);
+      setSavedProducts((prevSavedProducts) => [...prevSavedProducts, productID]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleRemoveSavedProduct = async (productID) => {
+    const userID = window.localStorage.getItem("UserID");
+    try {
+      const payload = { productID, userID };
+      await axios.delete(`http://localhost:3001/products/${productID}`, { data: payload });
+      setSavedProducts((prevSavedProducts) => prevSavedProducts.filter(id => id !== productID));
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -97,8 +136,14 @@ export const Home = () => {
         }}
         onScroll={handleScroll}
       >
-        {products.map((product) => (
-          <ProductCard key={product._id} product={product} />
+    {products.map((product) => (
+        <ProductCard
+            key={product._id}
+            product={product}
+            isProductSaved={isProductSaved}
+            onSaveProduct={handleSaveProduct}
+            onRemoveSavedProduct={handleRemoveSavedProduct} // Assuming you have a function to remove saved product
+        />
         ))}
         {loading && <div>Loading more products...</div>}
       </div>

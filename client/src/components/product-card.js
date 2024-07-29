@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, CardActions, Button, Box } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import Circle from './card-circles.js';
 import CardSlider from './card-slider.js';
-import { useGetUserID } from '../Hooks/getUserId.js';
 import axios from 'axios';
 
 // Importing images statically
@@ -24,9 +24,17 @@ const imageSources = {
     hydrophobic: hydrophobicImg
 };
 
-function ProductCard({ product }) {
-    const userID = window.localStorage.getItem("UserID")
+function ProductCard({ product, isProductSaved, onSaveProduct, onRemoveSavedProduct }) {
+    const location = useLocation();
+    const isSavedPage = location.pathname === '/saved-products';
+
+    const userID = window.localStorage.getItem("UserID");
     const [sliderValue, setSliderValue] = useState(product.initialValue || 50); // Initial slider value, can be adjusted as needed
+    const [isSaved, setIsSaved] = useState(false); // Local state to track if the product is saved
+
+    useEffect(() => {
+        setIsSaved(isProductSaved(product._id));
+    }, [isProductSaved, product._id]);
 
     const handleSliderChange = (event, newValue) => {
         setSliderValue(newValue);
@@ -36,22 +44,10 @@ function ProductCard({ product }) {
         return product[attribute] > 0 ? imageSources[key] : null;
     };
 
-    const saveProduct = async (productID, userID) => {
-        try {
-            const payload = { productID, userID };
-            console.log('Sending payload:', payload);
-    
-            const response = await axios.put("http://localhost:3001/products", payload);
-            console.log('Response:', response);
-        } catch (err) {
-            if (err.response) {
-                console.error('Error response data:', err.response.data);
-            } else {
-                console.error('Error message:', err.message);
-            }
-        }
+    const saveProduct = async () => {
+        await onSaveProduct(product._id);
+        setIsSaved(true);
     };
-    
 
     return (
         <Card sx={{
@@ -182,7 +178,23 @@ function ProductCard({ product }) {
 
             </CardContent>
             <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <Button onClick={() => saveProduct(product._id, userID)} size="small" sx={{ color: product.primaryColor }}>Save</Button>
+                {!isSavedPage && (
+                    <>
+                        {isSaved ? (
+                            <Button size="small" sx={{ color: product.primaryColor }} disabled>Saved</Button>
+                        ) : (
+                            <Button onClick={saveProduct} size="small" sx={{ color: product.primaryColor }}>Save</Button>
+                        )}
+                        <Button size="small" sx={{ color: product.primaryColor }}>Update</Button>
+                        <Button size="small" sx={{ color: product.primaryColor }}>Remove</Button>
+                    </>
+                )}
+                {isSavedPage && (
+                    <>
+                        <Button size="small" sx={{ color: product.primaryColor }}>Buy</Button>
+                        <Button onClick={() => onRemoveSavedProduct(product._id)} size="small" sx={{ color: product.primaryColor }}>Remove from saved</Button>
+                    </>
+                )}
             </CardActions>
         </Card>
     );
