@@ -26,6 +26,11 @@ function CardSlider({ name, title, value, onChange, min, max, step }) {
                         marginRight: 0, 
                         minWidth: '120px', 
                         color: '#ffffff', // Bright white text color
+                        fontFamily: "'Balthazar', serif",
+                        fontWeight: 'normal',
+                        fontSize: '16px',
+                        color: '#fff',
+
                     }}
                 >
                     {title}
@@ -43,14 +48,18 @@ function CardSlider({ name, title, value, onChange, min, max, step }) {
                         '& .MuiSlider-thumb': {
                             backgroundColor: '#fff', // White slider thumb
                             width: 8,
-                            height: 8,
+                            height: 10,
                             borderRadius: 0, // Makes the thumb square
                         },
                         '& .MuiSlider-track': {
-                            backgroundColor: '#ffeb3b', // Yellow slider track
+                            backgroundColor: '#fff', // Yellow slider track
+                            height: 10,
+                            border: 'none'
                         },
                         '& .MuiSlider-rail': {
                             backgroundColor: '#ccc', // Light gray slider rail
+                            height: 10,
+                            border: 'none'
                         }
                     }}
                 />

@@ -80,7 +80,6 @@ export const Home = () => {
     return savedProducts.includes(id);
   };
 
-
   const handleSaveProduct = async (productID) => {
     const userID = window.localStorage.getItem("UserID");
     try {
@@ -110,16 +109,15 @@ export const Home = () => {
         gridTemplateAreas: `
           'filters header header'
           'filters products products'
-          'offers offers offers'
         `,
         gridTemplateColumns: '1fr 3fr',
         gap: '3px',
         padding: '5px',
         height: 'calc(100vh - 40px)',
-        overflow: 'hidden'
+        overflow: 'hidden' // This can remain as is if needed
       }}
     >
-      <div style={{ gridArea: 'filters', border: '1px solid #ccc', padding: '10px', overflowY: 'auto', maxHeight: 'calc(100vh - 40px)' }}>
+      <div style={{ gridArea: 'filters', border: '1px solid #ccc', padding: '10px', overflowY: 'auto', height: '100%' }}>
         <FilterComponent onFilterChange={handleFilterChange} />
       </div>
       <div style={{ gridArea: 'header', border: '1px solid #ccc', padding: '10px' }}>
@@ -132,23 +130,22 @@ export const Home = () => {
           flexWrap: 'wrap',
           justifyContent: 'center',
           overflowY: 'auto',
-          maxHeight: 'calc(100vh - 200px)'
+          height: '100%',
+          backgroundColor: 'black', // Set background color to black
+          color: 'white' // Set text color to white for better contrast
         }}
         onScroll={handleScroll}
       >
-    {products.map((product) => (
-        <ProductCard
+        {products.map((product) => (
+          <ProductCard
             key={product._id}
             product={product}
             isProductSaved={isProductSaved}
             onSaveProduct={handleSaveProduct}
             onRemoveSavedProduct={handleRemoveSavedProduct} // Assuming you have a function to remove saved product
-        />
+          />
         ))}
         {loading && <div>Loading more products...</div>}
-      </div>
-      <div style={{ gridArea: 'offers', border: '1px solid #ccc', padding: '10px' }}>
-        Special Offers
       </div>
     </div>
   );

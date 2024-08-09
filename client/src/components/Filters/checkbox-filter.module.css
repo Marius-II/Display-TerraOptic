@@ -1,8 +1,8 @@
 .filterContainer {
   padding: 20px;
-  border: 1px solid #a7830d;
+  border: 0px solid #a7830d;
   border-radius: 10px;
-  background-color: #f9f9f9;
+  background-color: hsl(0, 0%, 100%);
   overflow-y: auto;
   height: 80vh; /* Default height for large screens */
 }

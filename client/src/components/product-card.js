@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, CardActions, Button, Box } from '@mui/material';
+import { Card, CardContent, Typography, CardActions, IconButton, Box } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import Circle from './card-circles.js';
 import CardSlider from './card-slider.js';
 import axios from 'axios';
+import SaveIcon from '@mui/icons-material/Save';
+import CheckIcon from '@mui/icons-material/Check';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // Importing images statically
 import antireflexImg from '../assets/antireflex.png';
@@ -52,7 +56,7 @@ function ProductCard({ product, isProductSaved, onSaveProduct, onRemoveSavedProd
     return (
         <Card sx={{
             width: 345,             // Fixed width of the card
-            height: 600,            // Fixed height of the card
+            height: 700,            // Fixed height of the card
             m: 1,
             border: 1,
             borderColor: 'grey.300',
@@ -181,18 +185,24 @@ function ProductCard({ product, isProductSaved, onSaveProduct, onRemoveSavedProd
                 {!isSavedPage && (
                     <>
                         {isSaved ? (
-                            <Button size="small" sx={{ color: product.primaryColor }} disabled>Saved</Button>
+                            <IconButton size="small" sx={{ color: '#C8DAEF' }} disabled>
+                                <CheckIcon />
+                            </IconButton>
                         ) : (
-                            <Button onClick={saveProduct} size="small" sx={{ color: product.primaryColor }}>Save</Button>
+                            <IconButton onClick={saveProduct} size="small" sx={{ color: '#C8DAEF' }}>
+                                <SaveIcon />
+                            </IconButton>
                         )}
-                        <Button size="small" sx={{ color: product.primaryColor }}>Update</Button>
-                        <Button size="small" sx={{ color: product.primaryColor }}>Remove</Button>
                     </>
                 )}
                 {isSavedPage && (
                     <>
-                        <Button size="small" sx={{ color: product.primaryColor }}>Buy</Button>
-                        <Button onClick={() => onRemoveSavedProduct(product._id)} size="small" sx={{ color: product.primaryColor }}>Remove from saved</Button>
+                        <IconButton size="small" sx={{ color: '#C8DAEF' }}>
+                            <ShoppingCartIcon />
+                        </IconButton>
+                        <IconButton onClick={() => onRemoveSavedProduct(product._id)} size="small" sx={{ color: '#C8DAEF' }}>
+                            <DeleteIcon />
+                        </IconButton>
                     </>
                 )}
             </CardActions>
