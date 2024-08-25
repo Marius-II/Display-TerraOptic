@@ -22,12 +22,18 @@ export const Home = () => {
   const fetchSavedProducts = async () => {
     const userID = window.localStorage.getItem("UserID");
     try {
-      const response = await axios.get(`http://localhost:3001/products/savedProducts/ids${userID}`);
-      setSavedProducts(response.data.savedProducts);
+        const response = await axios.get(`http://localhost:3001/products/savedProducts/ids${userID}`);
+        if (response.data && response.data.savedProducts) {
+            setSavedProducts(response.data.savedProducts);
+        } else {
+            setSavedProducts([]); // Fallback to an empty array if the response is not as expected
+        }
     } catch (err) {
-      console.error(err);
+        console.error(err);
+        setSavedProducts([]); // Fallback to an empty array on error
     }
   };
+
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);

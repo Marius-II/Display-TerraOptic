@@ -10,13 +10,15 @@ export const SavedProducts = () => {
     const userID = window.localStorage.getItem("UserID");
     try {
       const response = await axios.get(`http://localhost:3001/products/savedProducts/${userID}`);
-      setSavedProducts(response.data.savedProducts);
+      console.log(response.data); // Log the response to check structure
+      setSavedProducts(response.data.savedProducts || []);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleRemoveSavedProduct = async (productID) => {
     const userID = window.localStorage.getItem("UserID");

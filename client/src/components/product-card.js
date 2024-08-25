@@ -38,7 +38,7 @@ function ProductCard({ product, isProductSaved, onSaveProduct, onRemoveSavedProd
 
     useEffect(() => {
         setIsSaved(isProductSaved(product._id));
-    }, [isProductSaved, product._id]);
+    }, [isProductSaved, product._id]); 
 
     const handleSliderChange = (event, newValue) => {
         setSliderValue(newValue);
