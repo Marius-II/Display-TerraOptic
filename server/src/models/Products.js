@@ -12,12 +12,12 @@ const ProductSchema = new Schema({
         required: true
     },
 
-    distance: {
+    description: {  // "personalizare" translated to "customization"
         type: String,
         required: true
     },
 
-    thicknessReduction: {
+    distance: {
         type: String,
         required: true
     },
@@ -36,14 +36,14 @@ const ProductSchema = new Schema({
         required: true
     },
 
-    hydrophobic: {  // "hidrofob" translated to "hydrophobic"
+    oleophobic: {  // "oleofob" translated to "oleophobic"
         type: Number,
         min: 0,
         max: 100,
         required: true
     },
 
-    oleophobic: {  // "oleofob" translated to "oleophobic"
+    hydrophobic: {  // "hidrofob" translated to "hydrophobic"
         type: Number,
         min: 0,
         max: 100,
@@ -57,25 +57,62 @@ const ProductSchema = new Schema({
         required: true
     },
 
-    heliomat: {
-        type: String,
-        required: true
-    },
-
-    comfort: {
+    blueFilter: {
         type: Number,
         min: 0,
         max: 100,
         required: true
     },
 
-    blueFilter: {
-        type: String,
+    thicknessReduction: {
+        type: Number,
+        min: 0,
+        max: 100,
         required: true
     },
 
+    heliomat: {
+        type: Number,
+        min: 0,
+        max: 100,
+        required: true
+    },
+
+    distanceAttribute: {
+        type: Number,
+        min: 0,
+        max: 100,
+        required: true
+    },
+    intermediarAttribute: {
+        type: Number,
+        min: 0,
+        max: 100,
+        required: true
+    },
+    closeAttribute: {
+        type: Number,
+        min: 0,
+        max: 100,
+        required: true
+    },
+    comfort: {
+        type: Number,
+        min: 0,
+        max: 100,
+        required: true
+    },
+    focalization: {
+        type: Number,
+        min: 0,
+        max: 100,
+        required: true
+    },
+    
     adaptive: {
-        type: Boolean,
+        type: Number,
+        min: 0,
+        max: 100,
         required: true
     },
 
@@ -83,10 +120,7 @@ const ProductSchema = new Schema({
         type: Boolean,
         required: true
     },
-    description: {  // "personalizare" translated to "customization"
-        type: String,
-        required: true
-    },
+
     primaryProductColor: {  // "personalizare" translated to "customization"
         type: String,
         required: true
@@ -95,10 +129,12 @@ const ProductSchema = new Schema({
         type: String,
         required: true
     },
+
     visualField: {  // "personalizare" translated to "customization"
         type: String,
         required: true
     },
+
     deliveryTime: {  // "personalizare" translated to "customization"
         type: String,
         required: true

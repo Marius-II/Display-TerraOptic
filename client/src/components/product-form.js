@@ -30,19 +30,33 @@ function ProductForm() {
     const [formData, setFormData] = useState({
         productName: '',
         price: 100,
+        description: '',
         distance: '',
-        thicknessReduction: '',
+
         hardening: 50,
         antireflex: 50,
-        hydrophobic: 50,
         oleophobic: 50,
+        hydrophobic: 50,
         antistatic: 50,
-        blueFilter: false,
-        adaptive: false,
+
+        blueFilter: 30,
+
+        thicknessReduction: 30,
+
+        
+
+        heliomat: 30,
+
+        distanceAttribute: 50,
+        intermediarAttribute: 50,
+        closeAttribute: 50,
+        
         comfort: 50,
-        heliomat: 50,
+        focalization: 50,
+        adaptive: 50,
+        
         customization: false,
-        description: '',
+        
         primaryProductColor: '',
         secondaryProductColor: '',
         visualField: '',
@@ -105,6 +119,13 @@ function ProductForm() {
             />
 
             <InputAttribute
+                name="price"
+                label="Pret"
+                value={formData.price}
+                onChange={handleAttributeChange}
+            />
+
+            <InputAttribute
                 name="description"
                 label="Descriere produs"
                 value={formData.description}
@@ -113,12 +134,7 @@ function ProductForm() {
                 rows={4}
             />
 
-            <InputAttribute
-                name="price"
-                label="Pret"
-                value={formData.price}
-                onChange={handleAttributeChange}
-            />
+
             <DropdownAttribute
                 name="distance"
                 label={"Tipul de ochelari"}
@@ -134,18 +150,7 @@ function ProductForm() {
                     { value: 'distanta-aproape', label: 'Distanta-Aproape' },
                 ]}
             />
-            <DropdownAttribute
-                name="thicknessReduction"
-                label={"Subtiere"}
-                value={formData.thicknessReduction}
-                onChange={handleAttributeChange}
-                options={[
-                    { value: 'fara subtiere', label: 'Fara subtiere' }, 
-                    { value: 'lite', label: 'Lite' },
-                    { value: 'lite+', label: 'Lite+' },
-                    { value: 'lite++', label: 'Lite++' },
-                ]}
-            />
+
             <SliderAttribute
                 name = 'hardening'
                 title="Duritate"
@@ -155,20 +160,12 @@ function ProductForm() {
                 max={100}
                 step={10}
             />
+
             <SliderAttribute
                 name = 'antireflex'
                 title="Antireflex"
                 value={formData.antireflex}
                 onChange={(e, newValue) => handleAttributeChange({ target: { name: 'antireflex', value: newValue }})}
-                min={0}
-                max={100}
-                step={10}
-            />
-            <SliderAttribute
-                name = 'hydrophobic'
-                title="Hidrofob"
-                value={formData.hydrophobic}
-                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'hydrophobic', value: newValue }})}
                 min={0}
                 max={100}
                 step={10}
@@ -182,7 +179,18 @@ function ProductForm() {
                 min={0}
                 max={100}
                 step={10}
-            />  
+            />
+
+            <SliderAttribute
+                name = 'hydrophobic'
+                title="Hidrofob"
+                value={formData.hydrophobic}
+                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'hydrophobic', value: newValue }})}
+                min={0}
+                max={100}
+                step={10}
+            />
+  
             <SliderAttribute
                 name = 'antistatic'
                 title="Antistatic"
@@ -192,6 +200,76 @@ function ProductForm() {
                 max={100}
                 step={10}
             />
+
+            <DropdownAttribute
+                name="blueFilter"
+                label={"Filtru lumina albastra"}
+                value={formData.blueFilter}
+                onChange={handleAttributeChange}
+                options={[
+                    { value: 0, label: 'Fara filtru lumina albastra' }, 
+                    { value: 30, label: 'Emerald' },
+                    { value: 60, label: 'Emerald blue' },
+                    { value: 90, label: 'Blue' },
+                ]}
+            />
+
+
+            <DropdownAttribute
+                name="thicknessReduction"
+                label={"Subtiere"}
+                value={formData.thicknessReduction}
+                onChange={handleAttributeChange}
+                options={[
+                    { value: 0, label: 'Fara subtiere' }, 
+                    { value: 30, label: 'Lite' },
+                    { value: 60, label: 'Lite+' },
+                    { value: 90, label: 'Lite++' },
+                ]}
+            />
+
+            <DropdownAttribute
+                name="heliomat"
+                label={"Heliomat"}
+                value={formData.heliomat}
+                onChange={handleAttributeChange}
+                options={[
+                    { value: 0, label: 'fara heliomat' }, 
+                    { value: 30, label: 'clasic' },
+                    { value: 60, label: 'avansat' },
+                    { value: 90, label: 'expert' },
+                ]}
+            />
+
+            <SliderAttribute
+                name = 'distanceAttribute'
+                title="Distanta"
+                value={formData.distanceAttribute}
+                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'distanceAttribute', value: newValue }})}
+                min={0}
+                max={100}
+                step={10}
+            /> 
+            <SliderAttribute
+                name = 'intermediarAttribute'
+                title="Intermediar"
+                value={formData.intermediarAttribute}
+                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'intermediarAttribute', value: newValue }})}
+                min={0}
+                max={100}
+                step={10}
+            /> 
+            <SliderAttribute
+                name = 'closeAttribute'
+                title="Aproape"
+                value={formData.closeAttribute}
+                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'closeAttribute', value: newValue }})}
+                min={0}
+                max={100}
+                step={10}
+            /> 
+
+
             <SliderAttribute
                 name = 'comfort'
                 title="Confort"
@@ -202,36 +280,25 @@ function ProductForm() {
                 step={10}
             />
 
-            <DropdownAttribute
-                name="heliomat"
-                label={"Heliomat"}
-                value={formData.heliomat}
-                onChange={handleAttributeChange}
-                options={[
-                    { value: 'fara heliomat', label: 'fara heliomat' }, 
-                    { value: 'clasic', label: 'clasic' },
-                    { value: 'avansat', label: 'avansat' },
-                    { value: 'expert', label: 'expert' },
-                ]}
+
+            <SliderAttribute
+                name = 'focalization'
+                title= 'Focalizare'
+                value={formData.focalization}
+                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'focalization', value: newValue }})}
+                min={0}
+                max={100}
+                step={10}
             />
-            
-            <DropdownAttribute
-                name="blueFilter"
-                label={"Filtru lumina albastra"}
-                value={formData.blueFilter}
-                onChange={handleAttributeChange}
-                options={[
-                    { value: 'fara filtru lumina albastra', label: 'Fara filtru lumina albastra' }, 
-                    { value: 'emerald', label: 'Emerald' },
-                    { value: 'emerald blue', label: 'Emerald blue' },
-                    { value: 'blue', label: 'Blue' },
-                ]}
-            />
-            <CheckboxAttribute
-                name="adaptive"
-                label="Adaptiv"
-                checked={formData.adaptive}
-                onChange={handleAttributeChange}
+
+            <SliderAttribute
+                name = 'adaptive'
+                title= 'Adaptare'
+                value={formData.adaptive}
+                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'adaptive', value: newValue }})}
+                min={0}
+                max={100}
+                step={10}
             />
 
 

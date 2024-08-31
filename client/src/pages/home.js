@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import ProductCard from '../components/product-card';
 import FilterComponent from '../components/Filters/checkbox-filter';
+import terraLogo from '../assets/terraLogo.png'; // Adjust the path to where your Terra logo is stored
 
 export const Home = () => {
   const [products, setProducts] = useState([]);
@@ -33,7 +34,6 @@ export const Home = () => {
         setSavedProducts([]); // Fallback to an empty array on error
     }
   };
-
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -108,49 +108,60 @@ export const Home = () => {
     }
   };
 
+  const isFilterApplied = () => {
+    return Object.values(filters).some((filter) => (Array.isArray(filter) && filter.length > 0) || (typeof filter === 'string' && filter !== ''));
+  };
+
   return (
     <div
       style={{
         display: 'grid',
         gridTemplateAreas: `
-          'filters header header'
+          'filters products products'
           'filters products products'
         `,
         gridTemplateColumns: '1fr 3fr',
         gap: '3px',
         padding: '5px',
         height: 'calc(100vh - 40px)',
-        overflow: 'hidden' // This can remain as is if needed
+        overflow: 'hidden'
       }}
     >
       <div style={{ gridArea: 'filters', border: '1px solid #ccc', padding: '10px', overflowY: 'auto', height: '100%' }}>
         <FilterComponent onFilterChange={handleFilterChange} />
       </div>
-      <div style={{ gridArea: 'header', border: '1px solid #ccc', padding: '10px' }}>
-        General Client Data
-      </div>
+
       <div
         style={{
           gridArea: 'products',
           display: 'flex',
           flexWrap: 'wrap',
-          justifyContent: 'center',
+          justifyContent: isFilterApplied() ? 'center' : 'center',
+          alignItems: isFilterApplied() ? 'flex-start' : 'center',
           overflowY: 'auto',
           height: '100%',
-          backgroundColor: 'black', // Set background color to black
-          color: 'white' // Set text color to white for better contrast
+          backgroundColor: 'black',
+          color: 'white',
+          padding: '10px', // Added padding for proper alignment
         }}
         onScroll={handleScroll}
       >
-        {products.map((product) => (
-          <ProductCard
-            key={product._id}
-            product={product}
-            isProductSaved={isProductSaved}
-            onSaveProduct={handleSaveProduct}
-            onRemoveSavedProduct={handleRemoveSavedProduct} // Assuming you have a function to remove saved product
-          />
-        ))}
+        {isFilterApplied() ? (
+          products.map((product) => (
+            <ProductCard
+              key={product._id}
+              product={product}
+              isProductSaved={isProductSaved}
+              onSaveProduct={handleSaveProduct}
+              onRemoveSavedProduct={handleRemoveSavedProduct}
+            />
+          ))
+        ) : (
+          <div style={{ padding: '120px'}}
+          >
+            <img src={terraLogo} alt="Terra Logo" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+          </div>
+        )}
         {loading && <div>Loading more products...</div>}
       </div>
     </div>
