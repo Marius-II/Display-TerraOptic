@@ -247,9 +247,9 @@ function ProductCard({ product, isProductSaved, onSaveProduct, onRemoveSavedProd
                                     step={20}
                                 />
                                 <CardSlider
-                                    name="adaptive-slider"
-                                    title="ADAPTIVE"
-                                    value={product.adaptive}
+                                    name="adapting-slider"
+                                    title="ADAPTARE"
+                                    value={product.adapting}
                                     onChange={handleSliderChange}
                                     min={0}
                                     max={100}

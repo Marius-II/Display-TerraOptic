@@ -53,11 +53,11 @@ function ProductForm() {
         
         comfort: 50,
         focalization: 50,
-        adaptive: 50,
+        adapting: 50,
         
-        customization: false,
+        customization: false, 
         
-        primaryProductColor: '',
+        primaryProductColor: '', 
         secondaryProductColor: '',
         visualField: '',
         deliveryTime: '',
@@ -80,7 +80,7 @@ function ProductForm() {
                 }
                 return updatedFormData;
             });
-        } else {
+        } else { 
             setFormData(formData => ({
                 ...formData,
                 [name]: value  // Use the 'value' for other inputs
@@ -292,10 +292,10 @@ function ProductForm() {
             />
 
             <SliderAttribute
-                name = 'adaptive'
+                name = 'adapting'
                 title= 'Adaptare'
-                value={formData.adaptive}
-                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'adaptive', value: newValue }})}
+                value={formData.adapting}
+                onChange={(e, newValue) => handleAttributeChange({ target: { name: 'adapting', value: newValue }})}
                 min={0}
                 max={100}
                 step={10}

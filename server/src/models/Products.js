@@ -109,7 +109,8 @@ const ProductSchema = new Schema({
         required: true
     },
     
-    adaptive: {
+
+    adapting: {
         type: Number,
         min: 0,
         max: 100,
