@@ -18,4 +18,4 @@ app.use ("/products", productsRouter)
 mongoose.connect("mongodb+srv://admin:adminterra@displayappcluster.a9iqzhw.mongodb.net/displayAppCluster?retryWrites=true&w=majority&appName=displayAppCluster"
 );
 
-app.listen(PORT, () => console.log("SERVER STARTED!")) 
+app.listen(PORT, () => console.log("SERVER STARTED!"))

@@ -24,13 +24,14 @@ router.get("/filter", async (req, res) => {
     let query = {};
 
     if (minPrice || maxPrice) query.price = {};
-    if (minPrice) query.price.$gte = Number(minPrice);
-    if (maxPrice) query.price.$lte = Number(maxPrice);
-    if (distance && Array.isArray(distance)) query.distance = { $in: distance };
-    if (thicknessReduction && Array.isArray(thicknessReduction)) query.thicknessReduction = { $in: thicknessReduction };
-    if (heliomat && Array.isArray(heliomat)) query.heliomat = { $in: heliomat };
-    if (blueFilter && Array.isArray(blueFilter)) query.blueFilter = { $in: blueFilter };
-    if (visualField && Array.isArray(visualField)) query.visualField = { $in: visualField };
+    if (minPrice && minPrice.trim() !== '') query.price.$gte = Number(minPrice);
+    if (maxPrice && maxPrice.trim() !== '') query.price.$lte = Number(maxPrice);    
+    if (distance) query.distance = { $in: Array.isArray(distance) ? distance : [distance] };
+    if (thicknessReduction) query.thicknessReduction = { $in: Array.isArray(thicknessReduction) ? thicknessReduction : [thicknessReduction] };
+    if (heliomat) query.heliomat = { $in: Array.isArray(heliomat) ? heliomat : [heliomat] };
+    if (blueFilter) query.blueFilter = { $in: Array.isArray(blueFilter) ? blueFilter : [blueFilter] };
+    if (visualField) query.visualField = { $in: Array.isArray(visualField) ? visualField : [visualField] };
+    
 
     try {
         const products = await ProductModel.find(query).skip(skip).limit(limit);
@@ -41,7 +42,8 @@ router.get("/filter", async (req, res) => {
             currentPage: page
         });
     } catch (err) {
-        res.status(500).json(err);
+        console.error('Error fetching products:', err);
+        res.status(500).json({ message: 'Internal server error', details: err.message });
     }
 });
 

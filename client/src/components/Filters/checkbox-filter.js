@@ -14,22 +14,78 @@ const FilterComponent = ({ onFilterChange }) => {
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
-
-    if (type === 'checkbox') {
-      setFilters(prevFilters => {
-        const newValues = checked
-          ? [...prevFilters[name], value]
-          : prevFilters[name].filter(item => item !== value);
-        return { ...prevFilters, [name]: newValues };
-      });
-    } else {
-      setFilters({ ...filters, [name]: value });
-    }
+  
+    setFilters(prevFilters => {
+      const newFilters = { ...prevFilters };
+      if (type === 'checkbox') {
+        if (checked) {
+          // Only add the value if it doesn't already exist in the array
+          if (!prevFilters[name].includes(value)) {
+            newFilters[name] = [...prevFilters[name], value];
+          }
+        } else {
+          // Remove the value from the array if unchecked
+          newFilters[name] = prevFilters[name].filter(item => item !== value);
+        }
+      } else {
+        newFilters[name] = value;
+      }
+      return newFilters;
+    });
   };
+  
+  const heliomatMapping = {
+    'fara heliomat': 0,
+    'clasic': 30,
+    'avansat': 60,
+    'expert': 90
+  };
+  
+  const blueFilterMapping = {
+    'fara filtru lumina albastra': 0,
+    'emerald': 30,
+    'emerald blue': 60,
+    'blue': 90
+  };
+  
+  const thicknessReductionMapping = {
+    'fara subtiere': 0,
+    'lite': 30,
+    'lite+': 60,
+    'lite++': 90
+  };
+  
 
   const handleApplyFilters = () => {
-    onFilterChange(filters);
+    const activeFilters = { ...filters };
+  
+    // Clear irrelevant filters based on distance selection
+    if (filters.distance.length === 0) {
+      activeFilters.thicknessReduction = [];
+      activeFilters.heliomat = [];
+      activeFilters.blueFilter = [];
+      activeFilters.visualField = [];
+    } else {
+      // Convert heliomat values to numbers
+      if (activeFilters.heliomat.length > 0) {
+        activeFilters.heliomat = activeFilters.heliomat.map(value => heliomatMapping[value] ?? value);
+      }
+  
+      // Convert blueFilter values to numbers
+      if (activeFilters.blueFilter.length > 0) {
+        activeFilters.blueFilter = activeFilters.blueFilter.map(value => blueFilterMapping[value] ?? value);
+      }
+  
+      // Convert thicknessReduction values to numbers
+      if (activeFilters.thicknessReduction.length > 0) {
+        activeFilters.thicknessReduction = activeFilters.thicknessReduction.map(value => thicknessReductionMapping[value] ?? value);
+      }
+    }
+  
+    console.log('Applying Filters with numeric values:', activeFilters);
+    onFilterChange(activeFilters);
   };
+  
 
   const isNothingSelected = () => filters.distance.length === 0;
   const isStandardSelected = () => filters.distance.some(value => ['distanta', 'aproape', 'distanta-aproape', 'progresiv'].includes(value));

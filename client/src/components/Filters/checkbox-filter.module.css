@@ -4,12 +4,12 @@
   border-radius: 10px;
   background-color: hsl(0, 0%, 100%);
   overflow-y: auto;
-  height: 80vh; /* Default height for large screens */
+  height: 100vh; /* Default height for large screens */
 }
 
 @media (max-height: 800px) {
   .filterContainer {
-    height: 60vh; /* Adjust height for shorter screens */
+    height: 100%; /* Adjust height for shorter screens */
   }
 }
 
@@ -27,19 +27,24 @@
 }
 
 .filterGroup {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two equal-width columns */
+  gap: 1px; /* Adjust the gap between columns */
   margin-bottom: 15px;
 }
+
 
 .filterLabel {
   display: flex;
   align-items: center;
   margin-bottom: 5px;
-  font-size: 14px;
+  font-size: 16px;
   color: #555;
 }
 
 .filterCheckbox {
   margin-right: 10px;
+  transform: scale(1.5);
 }
 
 .filterInput {

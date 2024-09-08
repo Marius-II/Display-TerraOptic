@@ -30,6 +30,7 @@ const CardTitle = ({ product }) => {
   return (
     <div style={{
       padding: '10px', // Combined padding
+      paddingLeft: '30px', // Adjusted padding to move text to the right
       borderRadius: '10px',
       border: `2px solid ${borderColor}`, // Set border color, fallback if gradient
       display: 'flex',

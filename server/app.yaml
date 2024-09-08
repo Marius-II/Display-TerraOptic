@@ -1,0 +1,11 @@
+runtime: nodejs18
+instance_class: F2
+env: standard
+
+handlers:
+  - url: /.*
+    script: auto
+
+env_variables:
+  MONGODB_URI: "mongodb+srv://admin:adminterra@displayappcluster.a9iqzhw.mongodb.net/displayAppCluster?retryWrites=true&w=majority&appName=displayAppCluster"
+  PORT: "8080"

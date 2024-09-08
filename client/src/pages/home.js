@@ -20,30 +20,50 @@ export const Home = () => {
     maxPrice: ''
   });
 
+  // Restore filters and scroll position from localStorage
+  useEffect(() => {
+    const savedFilters = JSON.parse(window.localStorage.getItem('filters'));
+    if (savedFilters) {
+      setFilters(savedFilters);
+    }
+
+    const savedScrollPosition = window.localStorage.getItem('scrollPosition');
+    if (savedScrollPosition) {
+      window.scrollTo(0, parseInt(savedScrollPosition));
+    }
+  }, []);
+
+  // Save filters and scroll position to localStorage
+  useEffect(() => {
+    window.localStorage.setItem('filters', JSON.stringify(filters));
+
+    const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+    window.localStorage.setItem('scrollPosition', scrollPosition);
+  }, [filters, page]);
+
   const fetchSavedProducts = async () => {
     const userID = window.localStorage.getItem("UserID");
     try {
-        const response = await axios.get(`http://localhost:3001/products/savedProducts/ids${userID}`);
-        if (response.data && response.data.savedProducts) {
-            setSavedProducts(response.data.savedProducts);
-        } else {
-            setSavedProducts([]); // Fallback to an empty array if the response is not as expected
-        }
+      const response = await axios.get(`http://localhost:3001/products/savedProducts/ids${userID}`);
+      if (response.data && response.data.savedProducts) {
+        setSavedProducts(response.data.savedProducts);
+      } else {
+        setSavedProducts([]); // Fallback to an empty array if the response is not as expected
+      }
     } catch (err) {
-        console.error(err);
-        setSavedProducts([]); // Fallback to an empty array on error
+      console.error(err);
+      setSavedProducts([]); // Fallback to an empty array on error
     }
   };
 
+  // Fetch products based on filters and page
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
       const activeFilters = Object.keys(filters)
-        .filter((key) => filters[key].length > 0 || (key === 'minPrice' || key === 'maxPrice'))
+        .filter((key) => filters[key].length > 0 || (filters[key] !== '' && (key === 'minPrice' || key === 'maxPrice')))
         .reduce((acc, key) => {
-          if (filters[key].length > 0 || (key === 'minPrice' || key === 'maxPrice')) {
-            acc[key] = filters[key];
-          }
+          acc[key] = filters[key];
           return acc;
         }, {});
 
@@ -52,9 +72,15 @@ export const Home = () => {
       });
 
       const fetchedProducts = response.data.products;
-      setProducts((prevProducts) => [...prevProducts, ...fetchedProducts]);
+
+      if (page === 1) {
+        setProducts(fetchedProducts); // Reset products for new filters
+      } else {
+        setProducts((prevProducts) => [...prevProducts, ...fetchedProducts]);
+      }
+
       if (fetchedProducts.length < 20) {
-        setHasMore(false);
+        setHasMore(false); // No more products if less than 20 are returned
       }
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -68,11 +94,12 @@ export const Home = () => {
     fetchSavedProducts();
   }, [fetchProducts]);
 
+  // Handle filter changes and reset the product list
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    setProducts([]);
-    setPage(1);
-    setHasMore(true);
+    setProducts([]); // Reset products when filters are changed
+    setPage(1); // Reset to page 1 on new filters
+    setHasMore(true); // Allow further fetching
   };
 
   const handleScroll = (e) => {
@@ -90,7 +117,7 @@ export const Home = () => {
     const userID = window.localStorage.getItem("UserID");
     try {
       const payload = { productID, userID };
-      const response = await axios.put("http://localhost:3001/products", payload);
+      await axios.put("http://localhost:3001/products", payload);
       setSavedProducts((prevSavedProducts) => [...prevSavedProducts, productID]);
     } catch (err) {
       console.error(err);
@@ -128,7 +155,7 @@ export const Home = () => {
       }}
     >
       <div style={{ gridArea: 'filters', border: '1px solid #ccc', padding: '10px', overflowY: 'auto', height: '100%' }}>
-        <FilterComponent onFilterChange={handleFilterChange} />
+        <FilterComponent onFilterChange={handleFilterChange} appliedFilters={filters} />
       </div>
 
       <div
@@ -142,7 +169,7 @@ export const Home = () => {
           height: '100%',
           backgroundColor: 'black',
           color: 'white',
-          padding: '10px', // Added padding for proper alignment
+          padding: '10px',
         }}
         onScroll={handleScroll}
       >
@@ -157,8 +184,7 @@ export const Home = () => {
             />
           ))
         ) : (
-          <div style={{ padding: '120px'}}
-          >
+          <div style={{ padding: '120px' }}>
             <img src={terraLogo} alt="Terra Logo" style={{ maxHeight: '100%', maxWidth: '100%' }} />
           </div>
         )}
